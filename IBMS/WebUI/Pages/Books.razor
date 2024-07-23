@@ -1,0 +1,27 @@
+﻿@page "/Books"
+@using WebUI.DTOs
+@inject GraphQLService GraphQLService
+
+<h3>Books</h3>
+<ul>
+    @if (bookList != null)
+    {
+        @foreach (var book in bookList)
+        {
+            <li>@book.Title - @book.Author.Name</li>
+        }
+    }
+    else
+    {
+        <li>Loading...</li>
+    }
+</ul>
+
+@code {
+    private List<BookDto> bookList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        bookList = await GraphQLService.GetBooksAsync();
+    }
+}
