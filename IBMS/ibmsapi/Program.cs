@@ -21,6 +21,13 @@ builder.Services
     .AddType<BookType>()
     .AddType<AuthorType>()
     .AddAuthorization();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("https://localhost:7179")
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
 
 var app = builder.Build();
 
@@ -36,7 +43,7 @@ app.UseHttpsRedirection();
 app.UseRouting(); // Add this line to configure routing
 
 app.UseAuthorization();
-
+app.UseCors("AllowSpecificOrigin");
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
